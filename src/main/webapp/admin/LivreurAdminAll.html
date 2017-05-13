@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gustat'IF - Liste des Restaurants</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+        <link rel="stylesheet" href="cmd.css" />
+    </head>
+    <body>
+        <h1>Gustat'IF &ndash; Livreurs</h1>
+        <div id='listeLivreurs'>
+            <span>chargement en cours...</span>
+        </div>
+
+
+        <script>
+
+            $(function() {
+
+                $.ajax({
+                    url: './AdminActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'ListeLivreur'                      
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var livreurs = data.livreurs;
+                    var contenuHtml = '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="clients.html">Clients</a> | \n\
+                    <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="livreurAdminAll.html">Livreurs</a></p>'
+                    contenuHtml += '<table>';
+                    var i;
+                    
+                    contenuHtml += '<tr><td>Numero</td><td>Type</td><td>Nom/Numero</td><td>Infos</td></tr>';
+                    for (i = 0; i < livreurs.length; i++) {
+                        contenuHtml += '<tr class="tableRow"><td>' + livreurs[i].id + '</td><td>' + livreurs[i].type + '</td>\n\
+                        <td>' + livreurs[i].nom + '</td><td><a href="LivreurAdmin.html?id='+ livreurs[i].id+'">Plus d\'infos</a></td></tr>';
+                    }
+                    contenuHtml += '</table>';
+
+                    $('#listeLivreurs').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#listeLivreurs').html('ERREUR de chargement');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+
+        </script>   
+    </body>
+</html>

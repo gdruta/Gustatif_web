@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Client - Commandes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+    </head>
+    <body>
+        <div id="user" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
+            <p id="userName"></p>
+        </div>
+        <div id="home" style="cursor: pointer;" onclick="window.location.href='./client.html'">
+            <p>Home</p>
+        </div>
+        <div id="commandes" style="cursor: pointer;" onclick="window.location.href='./commandes.html'">
+            <p>Mes Commnades</p>
+        </div>
+        <div id="restaurants" style="cursor: pointer;" onclick="window.location.href='./restaurants.html'">
+            <p>Restaurants</p>            
+        </div>
+        <div id="listeComandes">            
+        </div>
+        <script>
+            $(function() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'getListComandes'                      
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var commandes = data.commandes;
+                    var contenuHtml = 'Liste commandes';
+                    contenuHtml += '<tbody><tr><th>Numero</th><th>Date</th><th>Statut</th><th>Restaurant</th><th>Info</th></tr>';
+                    // 
+                    // contenuHtml += '<div>'+commandes[i].id+;
+                    contenuHtml += ' ';
+                    contenuHtml += data.user.nom;
+                    contenuHtml += '</ul>';
+                    $('#userName').html(contenuHtml);
+                })
+            });            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gustat'IF - INFO Restaurant</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        
+        <link rel="stylesheet" href="css/style.css">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">   
+        
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        
+    </head>
+    <body>
+        <div>
+        <h1>Gustat'IF &ndash; INFO Restaurant</h1>
+        <div>
+            <p>Liste des produits</p>
+            <table id="produits">
+            </table>
+        </div>
+        <div>
+        <p>
+            <label for="spinner">Quantite:</label>
+            <input id="spinner" name="value" min="1">
+        </p>
+        <p>
+            <button id="getvalue">AjoutProduits</button>            
+        </p>
+        </div>
+        <div>
+            <p>Votre Commande</p>
+            <table id="commande"></table>       
+        </div>
+        <div>
+            <p>Prix totale:</p>
+            <p id="prixTotale"></p>
+            <button id="passerCommande">Passer Commande</button>
+        </div>
+        </div>
+        <script>
+            var id = window.location.href.split('id=')[1];
+            $(function() {                
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'restaurant', 
+                        id: id
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var restaurant = data.restaurant;
+                    var contenuHtml;
+                    var i=0;
+                    var produits=data.restaurant.produits;                    
+                    for (i = 0; i < produits.length; i++)
+                    {
+                        contenuHtml+='<tr class="clickable-row" data-value="'+produits[i].id+'">';
+                        contenuHtml+='<td>'+produits[i].denomination+'</td><td>'+produits[i].description+'</td> <td>'+produits[i].prix+'</td>'; 
+                        contenuHtml+='</tr>';
+                    }                      
+                    $('#produits').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#produits').html('ERREUR de chargement');
+                })
+                .always(function() {
+                    //
+                });
+            });                        
+                
+        </script>
+        <script>            
+            $( function() {
+                var spinner = $( "#spinner" ).spinner();                
+                $( "#getvalue" ).on( "click", function() {
+                    var id=$("#produits tr.selected").data('value');
+                    var produit=$("#produits tr.selected td:first").html();
+                    var prix=$("#produits tr.selected td:nth-child(3)").html();
+                    var quantite=spinner.spinner("value");                    
+                    var contenuHtml='<tr class="commande-row" data-value="'+id+'">';                      
+                    contenuHtml+='<td>'+produit+'</td>';
+                    contenuHtml+='<td>'+prix+'</td>';
+                    contenuHtml+='<td>'+quantite+'</td>';
+                    contenuHtml+='<td>'+prix*quantite+'</td>';
+                    $('#commande').append(contenuHtml);                      
+                    $(function(){
+                        var total=0;                        
+                        $("tr.commande-row").each(function() {
+                            var sum=parseInt($(this).find("td:last").html());
+                            total=total+sum;                            
+                        });  
+                        $('#prixTotale').html(total);
+                    });              
+                });               
+
+                $( "button" ).button();
+            } );
+            var id = window.location.href.split('id=')[1];
+            $("#passerCommande").on("click",function(){
+                var listeProduits=[];
+                var i;
+                $(".commande-row").each(function() {
+                    $this = $(this);
+                    var id = $this.data('value');
+                    var quantity = $this.find("td:nth-child(3)").html();
+                    var item={"id":id,"quantity":quantity};
+                    listeProduits.push(item);
+                });
+                var data=JSON.stringify(listeProduits);
+                $(function() {                
+                    $.ajax({
+                        url: './ActionServlet',
+                        type: 'POST',
+                        data: {
+                            action: 'newCommande', 
+                            id: id,
+                            data: data                                    
+                        },
+                        dataType: 'json'
+                    });
+                });                        
+            });
+        </script>
+        <script>
+            $("#produits").on("click", ".clickable-row",function(){
+                $(this).addClass('selected').siblings().removeClass('selected');               
+            });
+
+        </script>
+    </body>
+</html>

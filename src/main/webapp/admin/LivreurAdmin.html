@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gustat'IF - INFO Restaurant</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="cmd.css" />
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+    </head>
+    <body>
+        <h1>Gustat'IF &ndash; INFO Commande</h1>
+        <div id='livreur'>
+            <span>chargement en cours...</span>
+        </div>
+
+
+        <script>
+            var id = window.location.href.split('id=')[1];
+            $(function() {                
+                $.ajax({
+                    url: './AdminActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'livreur', 
+                        id: id
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var livreur = data.livreur[0];
+                    var commandes = data.commandes;
+                    
+                    var contenuHtml = '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="clients.html">Clients</a> | \n\
+                    <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="livreur.html">Livreurs</a></p>'
+                    
+                    if( livreur.type == "Drone"){
+                        contenuHtml += '<p>Numéro Livreur : ';
+                        contenuHtml += livreur.id +'</p>';
+                        contenuHtml += '<p>Numéro de série :' + livreur.numero + '</p>'; 
+                        contenuHtml += '<p>Vitesse moyenne : ' + livreur.vitesse + 'km/h</p>';
+                        contenuHtml += '<p>Poids max : ' + livreur.capacite + 'g</p>';                   
+                    }else{
+                        contenuHtml += '<p>Numéro Livreur : ';
+                        contenuHtml += livreur.id +'</p>';
+                        contenuHtml += '<p>Adresse Mail :' + livreur.mail + '</p>';
+                        contenuHtml += '<p>Nom :' + livreur.nom + '</p>'; 
+                        contenuHtml += '<p>Prénom :' + livreur.prenom + '</p>'; 
+                        contenuHtml += '<p>Adresse :' + livreur.adresse + '</p>'; 
+                        contenuHtml += '<p>Poids Max :' + livreur.capacite + '</p>'; 
+                    }
+                    
+                    
+                    contenuHtml += '<table><tr><td>Numéro</td><td>Date</td><td>Statut</td><td>Total</td></tr>';
+                    for (i = 0; i < commandes.length; i++) {
+                        contenuHtml += '<tr><td>' + commandes[i].id + '</td><td>' + commandes[i].date + '</td><td>' + commandes[i].statut + '</td><td>' + commandes[i].prix +'</td></tr>';
+                    }
+                    contenuHtml += '</table>';
+                    
+                    contenuHtml += '<a href="LivreurAdminAll.html">Retour liste Commandes</a>'
+                   
+                    $('#livreur').html(contenuHtml);
+
+                })
+                .fail(function() {
+                    $('#livreur').html('ERREUR de chargement');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+            
+            function cloturer(id){
+                $.ajax({
+                    url: './AdminActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'cloture', 
+                        id: id
+                    },
+                    dataType: 'json'
+                })
+                    window.location.replace("gestionnaire.html");
+            }
+
+        </script>
+    </body>
+</html>

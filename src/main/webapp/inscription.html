@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Client-Inscription</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+    </head>
+    <body>
+        <div>
+            Inscription</br>
+            <form id="inscription" >                
+                <table>
+                    <tr>
+                        <th>Mail</th>
+                        <td><input type="text" name="mail" required></td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td><input type="text" name="nom" required></td>
+                    </tr>
+                    <tr>
+                        <th>Prenom</th>
+                        <td><input type="text" name="prenom" required></td>
+                    </tr>
+                    <tr>
+                        <th>Adresse</th>
+                        <td><input type="text" name="mail" required></td>
+                    </tr>
+                </table>
+                 
+                <input type="submit" name="Inscription" value="inscription">             
+                
+            </form>
+        </div>
+        <div id="resultat"></div>
+        <script>
+            $("#inscription").submit(function(e) {
+                var data =$('#inscription').serializeArray();
+                var url = "./ActionServlet"; // the script where you handle the form input.
+
+                $.ajax({
+                       type: "POST",
+                       url: url,
+                       data: {
+                           action:'inscriptionClient',
+                           nom:data[1].value,
+                           prenom:data[2].value,
+                           mail:data[0].value,
+                           adresse:data[3].value
+                       },
+                       dataType : 'json'
+                })
+                .done(function(data) {
+                       result=data.return.result;
+                       if (result==="succes"){
+                           window.location.href = "./index.html";
+                       }else{
+                           var contenuHtml = '<p>inscription pas complet</p>';
+                           $('#resultat').html(contenuHtml);
+                       }
+                });
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+            });
+                
+        </script>
+    </body>
+</html>

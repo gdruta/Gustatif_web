@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Accueil Gustat'if-Client</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+    </head>
+    <body>
+        <div>Bienvenue sur Gustat'if, cher Client</div>
+        <div>
+            <form id="login">                
+                Adresse mail : 
+                <input type="text" name="mail" required>
+                </br>
+                <input type="submit" value="Submit">          
+            </form>
+        </div>
+        <div>
+            <a href="inscription.html">Pas encore membre? Inscrivez-vous!</a>
+        </div>
+        <div>
+            <a href="livreurs.html">Espace Personnel Gustatif</a>
+        </div>
+        <div id='resultat'></div>
+        <script>
+            $("#login").submit(function(e) {
+                var data =$('#login').serializeArray();
+                var url = "./ActionServlet"; // the script where you handle the form input.
+                
+                $.ajax({
+                       type: "POST",
+                       url: url,
+                       data: {
+                           action: 'login',
+                           mail: data[0].value
+                       },
+                       dataType : 'json'
+                })
+                .done(function(data) {
+                       result=data.return.result;
+                       if (result==="succes"){
+                           window.location.href = "./client.html";
+                       }else{
+                           var contenuHtml = '<p>Mail inexistent</p>';
+                           $('#resultat').html(contenuHtml);
+                       }
+                });
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+            });
+                
+        </script>
+    </body>
+</html>

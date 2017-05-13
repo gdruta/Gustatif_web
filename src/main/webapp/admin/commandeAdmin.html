@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gustat'IF - INFO Restaurant</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="cmd.css" />
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+    </head>
+    <body>
+        <h1>Gustat'IF &ndash; INFO Commande</h1>
+        <div id='commande'>
+            <span>chargement en cours...</span>
+        </div>
+
+
+        <script>
+            var id = window.location.href.split('id=')[1];
+            $(function() {                
+                $.ajax({
+                    url: './AdminActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'commande', 
+                        id: id
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var commande = data.commande[0];
+                    var produits = data.produits;
+                    
+                    var contenuHtml = '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="clients.html">Clients</a> | \n\
+                    <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="livreurAdminAll.html">Livreurs</a></p>'
+                    
+                    contenuHtml += '<p>Numéro de commande : ';
+                    contenuHtml += commande.id +'</p>';
+                    contenuHtml += '<p>Livreur : num :' + commande.idL + ', de type '+ commande.type + '</p>'; 
+                    contenuHtml += '<p>Restaurant : ' + commande.denomR + ', ' + commande.adrR + '</p>';
+                    contenuHtml += '<p>Commande passée le ' + commande.date + ' à ' + commande.heure + 'h ' + commande.minute + 'avec une durée de livraison estimée à '+ commande.duree +' minutes</p>';
+                    
+                    contenuHtml += '<table><tr><td>Nom</td><td>Prix Unitaire</td><td>Quantité</td></tr>';
+                    for (i = 0; i < produits.length; i++) {
+                        contenuHtml += '<tr><td>' + produits[i].denomP + '</td><td>' + produits[i].prix + '</td><td>' + produits[i].quantite + '</td></tr>';
+                    }
+                    contenuHtml += '</table>';
+                    contenuHtml += '<p>Prix Total : ' + commande.prixTT + '€</p>';   
+                    contenuHtml += '<p>Poids Total : ' + commande.poidsTT + 'g</p>';   
+                    contenuHtml += '<p>Status livraison : ' + commande.statut + '</p>';
+                    
+                    contenuHtml += '<a href="CommandesAdminAll.html">Retour liste Commandes</a>'
+                    
+                    if(commande.statut == 'En cours de livraison' && commande.type == "Drone"){
+                        
+                        contenuHtml += '<button onclick="cloturer('+commande.id +')">Cloturer livraison</button>';
+                    }
+                    
+                 
+                    $('#commande').html(contenuHtml);
+
+                })
+                .fail(function() {
+                    $('#restaurant').html('ERREUR de chargement');
+                })
+                .always(function() {
+                    //
+                });
+
+            });
+            
+            function cloturer(id){
+                $.ajax({
+                    url: './AdminActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'cloture', 
+                        id: id
+                    },
+                    dataType: 'json'
+                })
+                    window.location.replace("gestionnaire.html");
+            }
+
+        </script>
+    </body>
+</html>
