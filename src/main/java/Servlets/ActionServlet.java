@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import metier.modele.Client;
+import metier.modele.Commande;
 import metier.modele.Restaurant;
 
 /**
@@ -83,6 +84,8 @@ public class ActionServlet extends HttpServlet {
                             break;
                         case "getListCommandes":
                             Action a = new PrintCommandesClientAction();
+                            a.execute(request);
+                            Formatage.sendListCommandesClient(out, (List<Commande>) request.getAttribute("commandes"));
                             break;
                         case "getListRestaurants":
                             Action a1 = new PrintRestoAction();

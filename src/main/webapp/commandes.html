@@ -9,22 +9,22 @@ and open the template in the editor.
         <title>Client - Commandes</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="cmd.css" />
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <div id="user" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
+        <div id="user" class="user" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
             <p id="userName"></p>
         </div>
-        <div id="home" style="cursor: pointer;" onclick="window.location.href='./client.html'">
-            <p>Home</p>
+        <div>
+        <p id="menu">
+            <a class="menuLink" href="client.html">Home</a> | 
+            <a class="menuLink" href="commandes.html">Mes Commandes</a> |             
+            <a class="menuLink" href="restaurants.html">Restaurants</a> | 
+        </p>
         </div>
-        <div id="commandes" style="cursor: pointer;" onclick="window.location.href='./commandes.html'">
-            <p>Mes Commnades</p>
-        </div>
-        <div id="restaurants" style="cursor: pointer;" onclick="window.location.href='./restaurants.html'">
-            <p>Restaurants</p>            
-        </div>
-        <div id="listeComandes">            
+        <div> 
+            <table id="listeComandes"></table>
         </div>
         <script>
             $(function() {
@@ -32,20 +32,39 @@ and open the template in the editor.
                     url: './ActionServlet',
                     type: 'POST',
                     data: {
-                        action: 'getListComandes'                      
+                        action: 'getUser'                      
                     },
                     dataType: 'json'
                 })
                 .done(function(data) {
-                    var commandes = data.commandes;
-                    var contenuHtml = 'Liste commandes';
-                    contenuHtml += '<tbody><tr><th>Numero</th><th>Date</th><th>Statut</th><th>Restaurant</th><th>Info</th></tr>';
-                    // 
-                    // contenuHtml += '<div>'+commandes[i].id+;
+                    var user = data.user;
+                    var contenuHtml = '<ul>';
+                    contenuHtml += data.user.prenom;
                     contenuHtml += ' ';
                     contenuHtml += data.user.nom;
                     contenuHtml += '</ul>';
                     $('#userName').html(contenuHtml);
+                })
+            });
+            $(function() {
+                $.ajax({
+                    url: './ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'getListCommandes'                      
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var commandes = data.commandes;                    
+                    var contenuHtml = '<tr><th>Numero</th><th>Date</th><th>Statut</th><th>Restaurant</th><th>Info</th></tr>';
+                    for (i = 0; i < commandes.length; i++) {
+                        contenuHtml += '<tr class="tableRow"><td>' + commandes[i].id + '</td><td>' + commandes[i].date + '</td><td>' + commandes[i].statut + '</td><td>'
+                        +commandes[i].restaurant +'</td><td><a href="commande.html?id='+ commandes[i].id+'">Plus d\'infos</a></td></tr>';
+                    }
+                    
+                    
+                    $('#listeCommandes').html(contenuHtml);
                 })
             });            
         </script>

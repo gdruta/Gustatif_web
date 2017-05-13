@@ -10,8 +10,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import metier.modele.Client;
+import metier.modele.Commande;
 import metier.modele.Produit;
 import metier.modele.Restaurant;
 import metier.service.ServiceMetier;
@@ -101,6 +103,31 @@ public class Formatage {
         
         String json= gson.toJson(container);
         
+        out.println(json);
+    }
+    
+    public static void sendListCommandesClient(PrintWriter out,List<Commande> commandes){
+        SimpleDateFormat dateSimple = new SimpleDateFormat("dd MMM yyyy");
+        JsonArray jsonList = new JsonArray();
+        ServiceMetier sm = new ServiceMetier();                
+        for (Commande c : commandes){
+            JsonObject jsonCmd = new JsonObject();            
+            jsonCmd.addProperty("id",c.getId());            
+            jsonCmd.addProperty("date", dateSimple.format(c.getDateCommande()));
+            
+            if(c.getEstLivree()){
+                jsonCmd.addProperty("statut","Cloturée");
+            }else{
+                jsonCmd.addProperty("statut","En cours");
+            }
+            jsonCmd.addProperty("restaurant", c.getRestaurant().getDenomination());
+            jsonList.add(jsonCmd);
+        }
+        JsonObject container = new JsonObject();
+        container.add("commandes",jsonList);
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json= gson.toJson(container);
         out.println(json);
     }
 }

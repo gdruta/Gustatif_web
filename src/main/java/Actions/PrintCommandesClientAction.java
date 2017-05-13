@@ -29,9 +29,9 @@ import metier.service.ServiceMetier;
 public class PrintCommandesClientAction extends Action {
     @Override
     public void execute(HttpServletRequest request) {
-        Client client=(Client) request.getAttribute("user");
+        Client client=(Client) request.getSession(false).getAttribute("user");
         List<Commande> list=(List<Commande>)client.getCommandes();
-        request.setAttribute("restaurants", list);
+        request.setAttribute("commandes", list);
     }
     
 }
