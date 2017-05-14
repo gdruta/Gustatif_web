@@ -48,7 +48,7 @@ and open the template in the editor.
                 .done(function(data) {
                        result=data.return.result;
                        if (result==="succes"){
-                           window.location.href = "./livreurs/livreur.html";
+                           window.location.href = "./livreurs/livreur?mail="+ data[0].value +".html";
                        }else{
                            var contenuHtml = '<p>Mail inexistent</p>';
                            $('#resultat').html(contenuHtml);
