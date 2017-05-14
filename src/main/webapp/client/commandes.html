@@ -23,8 +23,7 @@ and open the template in the editor.
             <a class="menuLink" href="restaurants.html">Restaurants</a> 
         </p>
         </div>
-        <div> 
-            <table id="listeComandes"></table>
+        <div id="listeCommandes">             
         </div>
         <script>
             $(function() {
@@ -44,7 +43,7 @@ and open the template in the editor.
                     contenuHtml += data.user.nom;
                     contenuHtml += '</ul>';
                     $('#userName').html(contenuHtml);
-                })
+                });
             });
             $(function() {
                 $.ajax({
@@ -56,14 +55,15 @@ and open the template in the editor.
                     dataType: 'json'
                 })
                 .done(function(data) {
+                    
                     var commandes = data.commandes;                    
-                    var contenuHtml = '<tr><th>Numero</th><th>Date</th><th>Statut</th><th>Restaurant</th><th>Info</th></tr>';
+                    var contenuHtml = '<table><tr><th>Numero</th><th>Date</th><th>Statut</th><th>Restaurant</th><th>Info</th></tr>';
                     var i;
                     for (i = 0; i < commandes.length; i++) {
                         contenuHtml += '<tr class="tableRow"><td>' + commandes[i].id + '</td><td>' + commandes[i].date + '</td><td>' + commandes[i].statut + '</td><td>'
                         +commandes[i].restaurant +'</td><td><a href="commande.html?id='+ commandes[i].id+'">Plus d\'infos</a></td></tr>';
                     }                  
-                    
+                    contenuHtml+='</table>';
                     $('#listeCommandes').html(contenuHtml);
                 });               
             });            
