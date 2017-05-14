@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Livreur</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="cmd.css" />
-        
+        <title>Gustat'IF - Livreur</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <h1>Bienvenue</h1>
-            <ul id="menu">
-                <li><a class="menuLink" href="livreur.html">home</a></li>
-                <li><a class="menuLink" href="CommandesLivreur.html">Historique de commandes</a></li>
-                <li><a class="menuLink" href="clients.html">Clients</a></li>
-            </ul>
+        <h1>Gustat'IF &ndash; Livreur</h1>
+        <div id='livreur'>
+            <span>chargement en cours...</span>
+        </div>
+
+
+        <script>
+            var mail = window.location.href.split('mail=')[1];
+                var contenuHtml = '<a href=CommandesLivreurCloturee.html?mail='+mail+'>Historique de Commandes</a> ';
+                contenuHtml += '<a href=CommandesLivreurEnCours.html?mail='+mail+'>Commandes en cours</a>';
+                $('#livreur').html(contenuHtml);
+            
+        </script>
     </body>
 </html>

@@ -8,21 +8,22 @@
         <link rel="stylesheet" href="cmd.css" />
     </head>
     <body>
-        <h1>Gustat'IF &ndash; Commandes</h1>
+        <h1>Gustat'IF &ndash; Historique des Commandes</h1>
         <div id='listeCommandes'>
             <span>chargement en cours...</span>
         </div>
 
 
         <script>
-
+            var mail = window.location.href.split('mail=')[1];
             $(function() {
 
                 $.ajax({
                     url: '../AdminActionServlet',
                     type: 'POST',
                     data: {
-                        action: 'listeCommande'                      
+                        action: 'listeCommandeCloturee',
+                        mail: mail
                     },
                     dataType: 'json'
                 })
@@ -36,7 +37,7 @@
                     contenuHtml += '<tr><td>Numero</td><td>Date</td><td>Statut</td><td>Restaurant</td><td>Infos</td></tr>';
                     for (i = 0; i < commandes.length; i++) {
                         contenuHtml += '<tr class="tableRow"><td>' + commandes[i].id + '</td><td>' + commandes[i].date + '</td><td>' + commandes[i].statut + '</td><td>'
-                        +commandes[i].restaurant +'</td><td><a href="commandeAdmin.html?id='+ commandes[i].id+'">Plus d\'infos</a></td></tr>';
+                        +commandes[i].restaurant +'</td><td><a href="commandeLivreur.html?id='+ commandes[i].id+'">Plus d\'infos</a></td></tr>';
                     }
                     contenuHtml += '</table>';
 

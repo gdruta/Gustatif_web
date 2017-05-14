@@ -101,6 +101,15 @@ public class ActionServletLivreur extends HttpServlet {
                         case "newCommande":
                             Action a3 = new FaireCommandeAction();
                             a3.execute(request);
+                            break;
+                        case "listeCommandeEnCours":
+                            String mail = request.getParameter("mail");
+                            out.println(InfoCommande.printListeCommandesByLivreurEnCours(mail));
+                            break;
+                        case "listeCommandeCloturee":
+                            String mail2 = request.getParameter("mail");
+                            out.println(InfoCommande.printListeCommandesByLivreurCloturee(mail2));
+                            break;
                     }
                             
                 }

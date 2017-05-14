@@ -75,6 +75,14 @@ public class AdminActionServlet extends HttpServlet {
                     id = parseLong(request.getParameter("id"));
                     out.println(InfoLivreur.printLivreurById(id));
                     break;
+                case "listeCommandeEnCours":
+                            String mail = request.getParameter("mail");
+                            out.println(InfoCommande.printListeCommandesByLivreurEnCours(mail));
+                            break;
+                case "listeCommandeCloturee":
+                            String mail2 = request.getParameter("mail");
+                            out.println(InfoCommande.printListeCommandesByLivreurEnCours(mail2));
+                            break;
             }
         }
     }

@@ -55,6 +55,70 @@ public class InfoCommande {
         return json;
     }
     
+    static public String printListeCommandesByLivreurEnCours(String mail){
+        JsonArray jsonList = new JsonArray();
+        ServiceMetier sm = new ServiceMetier();
+        List<Commande> commandes = sm.listerLesCommandes();
+        Livreur l = sm.trouverLivreurParEMail(mail);
+        for (Commande c : commandes){
+            if(c.getLivreur().getId() == l.getId() && !c.getEstLivree()){
+                JsonObject jsonCmd = new JsonObject();
+
+                jsonCmd.addProperty("id",c.getId());
+
+                SimpleDateFormat dateSimple = new SimpleDateFormat("dd MMM yyyy");
+
+                jsonCmd.addProperty("date", dateSimple.format(c.getDateCommande()));
+
+                if(c.getEstLivree()){
+                    jsonCmd.addProperty("statut","Cloturée");
+                }else{
+                    jsonCmd.addProperty("statut","En cours");
+                }
+                jsonCmd.addProperty("restaurant", c.getRestaurant().getDenomination());
+                jsonList.add(jsonCmd);
+            }
+        }
+        JsonObject container = new JsonObject();
+        container.add("commandes",jsonList);
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json= gson.toJson(container);
+        return json;
+    }
+    
+        static public String printListeCommandesByLivreurCloturee(String mail){
+        JsonArray jsonList = new JsonArray();
+        ServiceMetier sm = new ServiceMetier();
+        List<Commande> commandes = sm.listerLesCommandes();
+        Livreur l = sm.trouverLivreurParEMail(mail);
+        for (Commande c : commandes){
+            if(c.getLivreur().getId() == l.getId() && c.getEstLivree()){
+                JsonObject jsonCmd = new JsonObject();
+
+                jsonCmd.addProperty("id",c.getId());
+
+                SimpleDateFormat dateSimple = new SimpleDateFormat("dd MMM yyyy");
+
+                jsonCmd.addProperty("date", dateSimple.format(c.getDateCommande()));
+
+                if(c.getEstLivree()){
+                    jsonCmd.addProperty("statut","Cloturée");
+                }else{
+                    jsonCmd.addProperty("statut","En cours");
+                }
+                jsonCmd.addProperty("restaurant", c.getRestaurant().getDenomination());
+                jsonList.add(jsonCmd);
+            }
+        }
+        JsonObject container = new JsonObject();
+        container.add("commandes",jsonList);
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json= gson.toJson(container);
+        return json;
+    }
+    
     static public String printListeCommandesById(long id){
         JsonArray jsonList = new JsonArray();
         ServiceMetier sm = new ServiceMetier();        
