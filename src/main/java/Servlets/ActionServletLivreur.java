@@ -22,14 +22,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import metier.modele.Client;
 import metier.modele.Commande;
+import metier.modele.Livreur;
 import metier.modele.Restaurant;
 
 /**
  *
  * @author Gheorghe
  */
-@WebServlet(urlPatterns = {"/ActionServlet"})
-public class ActionServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/ActionServletLivreur"})
+public class ActionServletLivreur extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,7 +58,7 @@ public class ActionServlet extends HttpServlet {
                 }else{
                     out.println(Formatage.printFail());
                 }
-            }else if ("inscriptionClient".equals(action)){
+            }else if ("inscriptionLivreur".equals(action)){
                 Action a = new InscriptionAction();
                 a.execute(request);
                 boolean result=(boolean) request.getAttribute("result");
@@ -69,7 +70,7 @@ public class ActionServlet extends HttpServlet {
             }else{
                 
                 //session verification
-                Client sessionUser = (Client) session.getAttribute("user");
+                Livreur sessionUser = (Livreur) session.getAttribute("user");
                 
                 if (sessionUser==null){
                     //redirection to login page
@@ -77,10 +78,10 @@ public class ActionServlet extends HttpServlet {
                 }else{
                     switch (action){
                         case "getUser":
-                            out.println(Formatage.getClient(sessionUser));
+                            out.println(Formatage.getLivreur(sessionUser));
                             break;
                         case "getUserInfo":
-                            out.println(Formatage.getClientInfo(sessionUser));
+                            out.println(Formatage.getLivreurInfo(sessionUser));
                             break;
                         case "getListCommandes":
                             Action a = new PrintCommandesClientAction();

@@ -6,13 +6,13 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Accueil Gustat'if-Client</title>
+        <title>Accueil Gustat'if-Livreurs</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <div>Bienvenue sur Gustat'if, cher Client</div>
+        <div>Bienvenue sur Gustat'if, cher Livreur</div>
         <div>
             <form id="login">                
                 Adresse mail : 
@@ -22,16 +22,19 @@ and open the template in the editor.
             </form>
         </div>
         <div>
-            <a href="./client/inscription.html">Pas encore membre? Inscrivez-vous!</a>
+            <a href="./inscription.html">Pas encore livrreur? Inscrivez-vous!</a>
         </div>
         <div>
-            <a href="./livreurs/livreurs.html">Espace Personnel Gustatif</a>
+            <a href="../index.html">Espace Utilisateur</a>
+        </div>
+        <div>
+            <a href="../admin/gestionnaire.html">Espace Gestionnaire</a>
         </div>
         <div id='resultat'></div>
         <script>
             $("#login").submit(function(e) {
                 var data =$('#login').serializeArray();
-                var url = "./ActionServlet"; // the script where you handle the form input.
+                var url = "../ActionServletLivreur"; // the script where you handle the form input.
                 
                 $.ajax({
                        type: "POST",
@@ -45,7 +48,7 @@ and open the template in the editor.
                 .done(function(data) {
                        result=data.return.result;
                        if (result==="succes"){
-                           window.location.href = "./client/client.html";
+                           window.location.href = "./livreurs/livreur.html";
                        }else{
                            var contenuHtml = '<p>Mail inexistent</p>';
                            $('#resultat').html(contenuHtml);

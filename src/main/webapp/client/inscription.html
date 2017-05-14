@@ -30,7 +30,7 @@ and open the template in the editor.
                     </tr>
                     <tr>
                         <th>Adresse</th>
-                        <td><input type="text" name="mail" required></td>
+                        <td><input type="text" name="adress" required></td>
                     </tr>
                 </table>
                  
@@ -42,7 +42,7 @@ and open the template in the editor.
         <script>
             $("#inscription").submit(function(e) {
                 var data =$('#inscription').serializeArray();
-                var url = "./ActionServlet"; // the script where you handle the form input.
+                var url = "../ActionServlet"; // the script where you handle the form input.
 
                 $.ajax({
                        type: "POST",
@@ -59,7 +59,7 @@ and open the template in the editor.
                 .done(function(data) {
                        result=data.return.result;
                        if (result==="succes"){
-                           window.location.href = "./index.html";
+                           window.location.href = "../index.html";
                        }else{
                            var contenuHtml = '<p>inscription pas complet</p>';
                            $('#resultat').html(contenuHtml);

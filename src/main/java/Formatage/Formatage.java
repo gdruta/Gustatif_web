@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import metier.modele.Client;
 import metier.modele.Commande;
+import metier.modele.Livreur;
+import metier.modele.LivreurHumain;
 import metier.modele.Produit;
 import metier.modele.Restaurant;
 import metier.service.ServiceMetier;
@@ -23,6 +25,28 @@ import metier.service.ServiceMetier;
  * @author Gheorghe
  */
 public class Formatage {
+    static public String printFail(){       
+        JsonObject jsonObj = new JsonObject();
+
+        jsonObj.addProperty("result","fail");
+        JsonObject container = new JsonObject();
+        container.add("return",jsonObj);
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json= gson.toJson(container);
+        return json;
+    }    
+    static public String printSucces(){       
+        JsonObject jsonObj = new JsonObject();
+
+        jsonObj.addProperty("result","succes");
+        JsonObject container = new JsonObject();
+        container.add("return",jsonObj);
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json= gson.toJson(container);
+        return json;
+    }
     public static String getClient(Client client) {
         JsonObject jsonClient = new JsonObject();
 
@@ -38,15 +62,49 @@ public class Formatage {
         String json= gson.toJson(container);
         return json;
     }
+    public static String getLivreur(Livreur livreur) {
+        JsonObject jsonClient = new JsonObject();
+
+        if (livreur != null) { //Si on a bien un restaurant
+            jsonClient.addProperty("nom", ((LivreurHumain) livreur).getNom());
+            jsonClient.addProperty("prenom", ((LivreurHumain) livreur).getPrenom());            
+        }
+
+        JsonObject container = new JsonObject();
+        container.add("user",jsonClient);        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        String json= gson.toJson(container);
+        return json;
+    }
     public static String getClientInfo(Client client) {
         JsonObject jsonClient = new JsonObject();
 
         if (client != null) { 
             jsonClient.addProperty("id", client.getId());
-            jsonClient.addProperty("mail", client.getMail());
+            jsonClient.addProperty("mail",client.getMail());
             jsonClient.addProperty("nom", client.getNom());
             jsonClient.addProperty("prenom", client.getPrenom());
             jsonClient.addProperty("adresse", client.getAdresse());            
+        }
+
+        JsonObject container = new JsonObject();
+        container.add("user",jsonClient);        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        String json= gson.toJson(container);
+        return json;
+    }
+    public static String getLivreurInfo(Livreur livreur) {
+        JsonObject jsonClient = new JsonObject();
+
+        if (livreur != null) { 
+            jsonClient.addProperty("id", livreur.getId());
+            jsonClient.addProperty("mail",((LivreurHumain) livreur).getMail());
+            jsonClient.addProperty("nom", ((LivreurHumain) livreur).getNom());
+            jsonClient.addProperty("prenom", ((LivreurHumain) livreur).getPrenom());
+            jsonClient.addProperty("adresse", ((LivreurHumain) livreur).getAdresse()); 
+            jsonClient.addProperty("poid", (livreur).getChargeMax()); 
         }
 
         JsonObject container = new JsonObject();

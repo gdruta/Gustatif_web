@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Client -Infos Client</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+    </head>
+    <body>
+        <div id="user" class="user" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
+            <p id="userName"></p>
+        </div>
+        <div>
+        <p id="menu">
+            <a class="menuLink" href="client.html">Home</a> | 
+            <a class="menuLink" href="commandes.html">Mes Commandes</a> |             
+            <a class="menuLink" href="restaurants.html">Restaurants</a> 
+        </p>
+        </div>
+        <div id="infos">            
+        </div>
+        <script>
+            $(function() {
+                $.ajax({
+                    url: '../ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'getUser'                      
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var user = data.user;
+                    var contenuHtml = '<ul>';
+                    contenuHtml += data.user.prenom;
+                    contenuHtml += ' ';
+                    contenuHtml += data.user.nom;
+                    contenuHtml += '</ul>';
+                    $('#userName').html(contenuHtml);
+                })
+            });
+            $(function() {
+                $.ajax({
+                    url: '../ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'getUserInfo'                      
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var user = data.user;
+                    var contenuHtml = '<ul>';
+                    contenuHtml += 'Numero Client: '+data.user.id;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Adresse Mail: '+data.user.mail;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Nom: '+data.user.nom;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Prenom: '+data.user.prenom;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Adresse: '+data.user.adresse;
+                    contenuHtml += '</br>';
+                    contenuHtml += '</ul>';
+                    $('#infos').html(contenuHtml);
+                })
+            });
+        </script>
+    </body>
+</html>

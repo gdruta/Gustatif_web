@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="../css/style.css">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">   
         
@@ -13,6 +13,16 @@
         
     </head>
     <body>
+        <div id="user" class="user" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
+            <p id="userName"></p>
+        </div>
+        <div>
+        <p id="menu">
+            <a class="menuLink" href="client.html">Home</a> | 
+            <a class="menuLink" href="commandes.html">Mes Commandes</a> |             
+            <a class="menuLink" href="restaurants.html">Restaurants</a> 
+        </p>
+        </div>
         <div>
         <h1>Gustat'IF &ndash; INFO Restaurant</h1>
         <div>
@@ -40,10 +50,29 @@
         </div>
         </div>
         <script>
+            $(function() {
+                $.ajax({
+                    url: '../ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'getUser'                      
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var user = data.user;
+                    var contenuHtml = '<ul>';
+                    contenuHtml += data.user.prenom;
+                    contenuHtml += ' ';
+                    contenuHtml += data.user.nom;
+                    contenuHtml += '</ul>';
+                    $('#userName').html(contenuHtml);
+                });
+            });
             var id = window.location.href.split('id=')[1];
             $(function() {                
                 $.ajax({
-                    url: './ActionServlet',
+                    url: '../ActionServlet',
                     type: 'POST',
                     data: {
                         action: 'restaurant', 
@@ -113,7 +142,7 @@
                 var data=JSON.stringify(listeProduits);
                 $(function() {                
                     $.ajax({
-                        url: './ActionServlet',
+                        url: '../ActionServlet',
                         type: 'POST',
                         data: {
                             action: 'newCommande', 
