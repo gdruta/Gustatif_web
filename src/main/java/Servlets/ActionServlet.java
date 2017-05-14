@@ -87,6 +87,11 @@ public class ActionServlet extends HttpServlet {
                             a.execute(request);
                             Formatage.sendListCommandesClient(out, (List<Commande>) request.getAttribute("commandes"));
                             break;
+                        case "commande":
+                            Action a4 = new PrintCommandesClientAction();
+                            a4.execute(request);
+                            Formatage.sendListCommandesClient(out, (List<Commande>) request.getAttribute("commandes"));
+                            break;
                         case "getListRestaurants":
                             Action a1 = new PrintRestoAction();
                             a1.execute(request);                            
