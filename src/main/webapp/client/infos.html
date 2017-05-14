@@ -36,7 +36,8 @@ and open the template in the editor.
                 })
                 .done(function(data) {
                     var user = data.user;
-                    var contenuHtml = '<ul>';
+                    var contenuHtml = '<a href="../index.html">Deconnexion</a>'; 
+                    contenuHtml += '<ul>';
                     contenuHtml += data.user.prenom;
                     contenuHtml += ' ';
                     contenuHtml += data.user.nom;

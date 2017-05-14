@@ -27,7 +27,8 @@
                 })
                 .done(function(data) {
                     var restaurants = data.restaurants;
-                    var contenuHtml = '<ul>';
+                    var contenuHtml = '<a href="../index.html">Deconnexion</a>'; 
+                    contenuHtml += '<ul>';
                     var i;
                     for (i = 0; i < restaurants.length; i++) {
                         contenuHtml += '<li>' + restaurants[i].id + ' ' + restaurants[i].denomination + 

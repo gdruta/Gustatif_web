@@ -15,7 +15,8 @@
 
         <script>
             var mail = window.location.href.split('mail=')[1];
-                var contenuHtml = '<a href=CommandesLivreurCloturee.html?mail='+mail+'>Historique de Commandes</a> ';
+                var contenuHtml = '<a href="../index.html">Deconnexion</a>';
+                contenuHtml += '<a href=CommandesLivreurCloturee.html?mail='+mail+'>Historique de Commandes</a> ';
                 contenuHtml += '<a href=CommandesLivreurEnCours.html?mail='+mail+'>Commandes en cours</a>';
                 $('#livreur').html(contenuHtml);
             

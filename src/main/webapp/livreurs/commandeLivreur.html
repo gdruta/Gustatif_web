@@ -33,6 +33,7 @@
                     var contenuHtml;/* = '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="clients.html">Clients</a> | \n\
                     <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="livreurAdminAll.html">Livreurs</a></p>'
                     */
+                    contenuHtml += '<a href="../index.html">Deconnexion</a>';
                     contenuHtml += '<p>Numéro de commande : ';
                     contenuHtml += commande.id +'</p>';
                     contenuHtml += '<p>Livreur : num :' + commande.idL + ', de type '+ commande.type + '</p>'; 
@@ -48,7 +49,7 @@
                     contenuHtml += '<p>Poids Total : ' + commande.poidsTT + 'g</p>';   
                     contenuHtml += '<p>Status livraison : ' + commande.statut + '</p>';
                     
-                    contenuHtml += '<a href="livreurs.html">Retour</a>'
+                    contenuHtml += '<a href="livreurs.html">Retour</a>';
                     
                     if(commande.statut == 'En cours de livraison'){
                         

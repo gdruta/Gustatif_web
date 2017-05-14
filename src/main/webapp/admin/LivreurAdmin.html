@@ -30,7 +30,8 @@
                     var livreur = data.livreur[0];
                     var commandes = data.commandes;
                     
-                    var contenuHtml = '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="clients.html">Clients</a> | \n\
+                    var contenuHtml = '<a href="../index.html">Deconnexion</a>'; 
+                    contenuHtml += '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="ClientAdminAll.html">Clients</a> | \n\
                     <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="livreur.html">Livreurs</a></p>'
                     
                     if( livreur.type == "Drone"){

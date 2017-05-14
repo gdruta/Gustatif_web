@@ -7,6 +7,7 @@ package Servlets;
  */
 
 import Actions.Action;
+import Actions.InfoClient;
 import Actions.InfoLivreur;
 import Actions.InfoRestaurant;
 import Actions.InfoCommande;
@@ -83,6 +84,9 @@ public class AdminActionServlet extends HttpServlet {
                             String mail2 = request.getParameter("mail");
                             out.println(InfoCommande.printListeCommandesByLivreurEnCours(mail2));
                             break;
+                case "listeClients":
+                    out.println(InfoClient.printListeClients());
+                    break;
             }
         }
     }

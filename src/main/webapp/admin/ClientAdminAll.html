@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Gustat'IF - Liste des Restaurants</title>
+        <title>Gustat'IF - Liste des Clients</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
         <link rel="stylesheet" href="cmd.css" />
     </head>
     <body>
-        <h1>Gustat'IF &ndash; Livreurs</h1>
-        <div id='listeLivreurs'>
+        <h1>Gustat'IF &ndash; Clients</h1>
+        <div id='listeClient'>
             <span>chargement en cours...</span>
         </div>
 
@@ -22,29 +22,29 @@
                     url: '../AdminActionServlet',
                     type: 'POST',
                     data: {
-                        action: 'ListeLivreur'                      
+                        action: 'listeClients'                      
                     },
                     dataType: 'json'
                 })
                 .done(function(data) {
-                    var livreurs = data.livreurs;
+                    var clients = data.clients;
                     var contenuHtml = '<a href="../index.html">Deconnexion</a>';
                     contenuHtml += '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="ClientAdminAll.html">Clients</a> | \n\
-                    <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="livreurAdminAll.html">Livreurs</a></p>'
+                    <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="LivreurAdminAll.html">Livreurs</a></p>'
                     contenuHtml += '<table>';
                     var i;
                     
-                    contenuHtml += '<tr><td>Numero</td><td>Type</td><td>Nom/Numero</td><td>Infos</td></tr>';
-                    for (i = 0; i < livreurs.length; i++) {
-                        contenuHtml += '<tr class="tableRow"><td>' + livreurs[i].id + '</td><td>' + livreurs[i].type + '</td>\n\
-                        <td>' + livreurs[i].nom + '</td><td><a href="LivreurAdmin.html?id='+ livreurs[i].id+'">Plus d\'infos</a></td></tr>';
+                    contenuHtml += '<tr><td>Numero</td><td>Nom</td><td>Prenom</td><td>Mail</td></tr>';
+                    for (i = 0; i < clients.length; i++) {
+                        contenuHtml += '<tr class="tableRow"><td>' + clients[i].id + '</td><td>' + clients[i].nom + '</td>\n\
+                        <td>' + clients[i].prenom + '</td><td>'+ clients[i].mail+'</td></tr>';
                     }
                     contenuHtml += '</table>';
 
-                    $('#listeLivreurs').html(contenuHtml);
+                    $('#listeClient').html(contenuHtml);
                 })
                 .fail(function() {
-                    $('#listeLivreurs').html('ERREUR de chargement');
+                    $('#listeClient').html('ERREUR de chargement');
                 })
                 .always(function() {
                     //
