@@ -24,30 +24,31 @@
         </p>
         </div>
         <div>
-        <h1>Gustat'IF &ndash; INFO Restaurant</h1>
-        <div>
-            <p>Liste des produits</p>
-            <table id="produits">
-            </table>
-        </div>
-        <div>
-        <p>
-            <label for="spinner">Quantite:</label>
-            <input id="spinner" name="value" min="1">
-        </p>
-        <p>
-            <button id="getvalue">AjoutProduits</button>            
-        </p>
-        </div>
-        <div>
-            <p>Votre Commande</p>
-            <table id="commande"></table>       
-        </div>
-        <div>
-            <p>Prix totale:</p>
-            <p id="prixTotale"></p>
-            <button id="passerCommande">Passer Commande</button>
-        </div>
+            <h1>Gustat'IF &ndash; INFO Restaurant</h1>
+            <div>
+                <p>Liste des produits</p>
+                <table id="produits">
+                </table>
+            </div>
+            <div>
+            <p>
+                <label for="spinner">Quantite:</label>
+                <input id="spinner" name="value" min="1">
+            </p>
+            <p>
+                <button id="getvalue">AjoutProduits</button>            
+            </p>
+            </div>
+            <div>
+                <p>Votre Commande</p>
+                <table id="commande"></table>       
+            </div>
+            <div>
+                <p>Prix totale:</p>
+                <p id="prixTotale"></p>
+                <button id="passerCommande">Passer Commande</button>
+            </div>
+            <div id="resultat"></div>
         </div>
         <script>
             $(function() {
@@ -61,7 +62,8 @@
                 })
                 .done(function(data) {
                     var user = data.user;
-                    var contenuHtml = '<ul>';
+                    var contenuHtml = '<a href="../index.html">Deconnexion</a>'; 
+                    contenuHtml += '<ul>';
                     contenuHtml += data.user.prenom;
                     contenuHtml += ' ';
                     contenuHtml += data.user.nom;
@@ -150,6 +152,15 @@
                             data: data                                    
                         },
                         dataType: 'json'
+                    })
+                    .done(function(data) {
+                        result=data.return.result;
+                        if (result==="succes"){
+                            window.location.href = "./client/restaurants.html";
+                        }else{
+                            var contenuHtml = '<p>Commande echoue</p>';
+                            $('#resultat').html(contenuHtml);
+                        }
                     });
                 });                        
             });
