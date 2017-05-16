@@ -19,7 +19,7 @@ and open the template in the editor.
                     <img src="../images/user.png"  style="width:42px;height:42px;border:0;">
                     <p id="userName"></p>                
                 </div>
-                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='../index.html'">                
+                <div class="top_item" style="cursor: pointer;" id="deconnection">                
                     <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
                     <p>Deconnection</p>
                 </div>
@@ -81,6 +81,17 @@ and open the template in the editor.
                     contenuHtml += '</ul>';
                     $('#infos').html(contenuHtml);
                 })
+            });
+            $('#deconnection').on('click',function(){
+                $.ajax({
+                    url: '../ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'deconnection'                      
+                    },
+                    dataType: 'json'
+                });
+                window.location.href = "../index.html";
             });
         </script>
     </body>

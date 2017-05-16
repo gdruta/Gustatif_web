@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Gustat'IF - INFO Restaurant</title>
+        <title>Gustat'IF - INFO Livreur</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="cmd.css" />
+        <meta name="viewport" content="width=device-width">        
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+        <link rel="stylesheet" href="../css/style.css" />
     </head>
     <body>
-        <h1>Gustat'IF &ndash; INFO Commande</h1>
-        <div id='livreur'>
-            <span>chargement en cours...</span>
+        <div class="top">
+            <div class="top_menu" id="user" >
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='../index.html'">                
+                    <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
+                    <p>Deconnection</p>
+                </div>
+            </div> 
         </div>
-
-
+        <div>
+        <p id="menu">
+            <a class="menuLink" href="gestionnaire.html">home</a> | 
+            <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | 
+            <a class="menuLink" href="ClientAdminAll.html">Clients</a> | 
+            <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | 
+            <a class="menuLink" href="LivreurAdminAll.html">Livreurs</a>
+        </p>       
+        </div>
+        <div id="livreur">
+        </div>
         <script>
             var id = window.location.href.split('id=')[1];
             $(function() {                
@@ -30,9 +43,7 @@
                     var livreur = data.livreur[0];
                     var commandes = data.commandes;
                     
-                    var contenuHtml = '<a href="../index.html">Deconnexion</a>'; 
-                    contenuHtml += '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="ClientAdminAll.html">Clients</a> | \n\
-                    <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="livreur.html">Livreurs</a></p>'
+                    var contenuHtml;
                     
                     if( livreur.type == "Drone"){
                         contenuHtml += '<p>Numéro Livreur : ';

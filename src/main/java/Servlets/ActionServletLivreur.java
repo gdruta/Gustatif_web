@@ -83,7 +83,13 @@ public class ActionServletLivreur extends HttpServlet {
                             break;
                         case "getUserInfo":
                             out.println(Formatage.getLivreurInfo(sessionUser));
-                            break;                        
+                            break;    
+                        case "deconnection":
+                        {
+                            Action a = new DeconnectionAction();
+                            a.execute(request);
+                            break;
+                        }
                         case "listeCommandeEnCours":
                             String mail = ((LivreurHumain) sessionUser).getMail();
                             out.println(InfoCommande.printListeCommandesByLivreurEnCours(mail));

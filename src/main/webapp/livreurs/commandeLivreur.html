@@ -5,13 +5,30 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="cmd.css" />
+        <link rel="stylesheet" href="../css/style.css">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <h1>Gustat'IF &ndash; INFO Commande</h1>
-        <div id='commande'>
-            <span>chargement en cours...</span>
+        <div class="top">
+            <div class="top_menu" id="user" >
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./infoLivreur.html'">
+                    <img src="../images/bike.png"  style="width:42px;height:42px;border:0;">
+                    <p id="userName"></p>                
+                </div>
+                <div class="top_item" style="cursor: pointer;" id="deconnection">                
+                    <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
+                    <p>Deconnection</p>
+                </div>
+            </div> 
         </div>
+        <div>
+        <p id="menu">
+            <a class="menuLink" href="livreur.html">Home</a> | 
+            <a class="menuLink" href="CommandesLivreurCloturee.html">Commandes</a> |             
+            <a class="menuLink" href="CommandesLivreurEnCours.html">Commandes en Cours</a> 
+        </p>
+        </div>
+        <div id="commande"></div>
 
 
         <script>
@@ -30,11 +47,7 @@
                     var commande = data.commande[0];
                     var produits = data.produits;
                     
-                    var contenuHtml = '<a href="../index.html">Deconnexion</a>';
-                    contenuHtml += '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="ClientAdminAll.html">Clients</a> | \n\
-                    <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="livreurAdminAll.html">Livreurs</a></p>'
-                    
-                    contenuHtml += '<p>Numéro de commande : ';
+                    var contenuHtml = '<p>Numéro de commande : ';
                     contenuHtml += commande.id +'</p>';
                     contenuHtml += '<p>Livreur : num :' + commande.idL + ', de type '+ commande.type + '</p>'; 
                     contenuHtml += '<p>Restaurant : ' + commande.denomR + ', ' + commande.adrR + '</p>';
@@ -49,7 +62,7 @@
                     contenuHtml += '<p>Poids Total : ' + commande.poidsTT + 'g</p>';   
                     contenuHtml += '<p>Status livraison : ' + commande.statut + '</p>';
                     
-                    contenuHtml += '<a href="CommandesAdminAll.html">Retour liste Commandes</a>'
+                    contenuHtml += '<a href="livreur.html">Retour Home</a>'
                     
                     if(commande.statut == 'En cours de livraison' && commande.type == "Humain"){
                         
@@ -61,7 +74,7 @@
 
                 })
                 .fail(function() {
-                    $('#restaurant').html('ERREUR de chargement');
+                    $('#commande').html('ERREUR de chargement');
                 })
                 .always(function() {
                     //
@@ -80,7 +93,18 @@
                     dataType: 'json'
                 })
                     window.location.replace("livreur.html");
-            }
+            };
+            $('#deconnection').on('click',function(){
+                $.ajax({
+                    url: '../ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'deconnection'                      
+                    },
+                    dataType: 'json'
+                });
+                window.location.href = "../index.html";
+            });
 
         </script>
     </body>

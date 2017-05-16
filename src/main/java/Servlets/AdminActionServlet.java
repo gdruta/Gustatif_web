@@ -11,6 +11,7 @@ import Actions.InfoClient;
 import Actions.InfoLivreur;
 import Actions.InfoRestaurant;
 import Actions.InfoCommande;
+import Actions.InfoRestaurantAction;
 import Actions.PrintRestoAction;
 import Formatage.Formatage;
 import dao.JpaUtil;
@@ -55,8 +56,9 @@ public class AdminActionServlet extends HttpServlet {
                     Formatage.sendListRestaurants(out, (List<Restaurant>) request.getAttribute("restaurants"));
                     break;
                 case "restaurant":
-                    id=parseLong(request.getParameter("id"));
-                    out.println(InfoRestaurant.printInfo(id));
+                    Action a= new InfoRestaurantAction();
+                    a.execute(request);
+                    Formatage.sendInfoRestaurant(out,(Restaurant)request.getAttribute("restaurant"));
                     break;
                 case "listeCommande":
                     out.println(InfoCommande.printListeCommandes());

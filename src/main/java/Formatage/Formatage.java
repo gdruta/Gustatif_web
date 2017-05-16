@@ -193,14 +193,14 @@ public class Formatage {
     
     public static void sendInfoCommande(PrintWriter out, Commande c) {             
         JsonObject jsonCmd = new JsonObject();
-            System.out.println(c);
+            System.out.println(c.getDateCommande());
         jsonCmd.addProperty("id",c.getId());
         SimpleDateFormat dateSimple1 = new SimpleDateFormat("dd MMM YYYY");
         
         jsonCmd.addProperty("date", dateSimple1.format(c.getDateCommande()));
         SimpleDateFormat heure = new SimpleDateFormat("HH");
         jsonCmd.addProperty("heure", heure.format(c.getDateCommande()));
-        SimpleDateFormat minute = new SimpleDateFormat("MM");
+        SimpleDateFormat minute = new SimpleDateFormat("mm");
         jsonCmd.addProperty("minute", minute.format(c.getDateCommande()));
         jsonCmd.addProperty("duree", c.getDureeEstimee());
         jsonCmd.addProperty("poidsTT", c.getPoidsTotal());

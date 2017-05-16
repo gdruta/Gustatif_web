@@ -3,6 +3,13 @@ body{
    margin-left : auto;
    margin-right : auto;
 }
+.login_box{
+    display: flex;
+    flex-direction: column;   
+    justify-content: center;
+    align-items: center;
+    
+}
 
 table, th, td {
    border: 1px solid blue;
@@ -36,6 +43,7 @@ table, th, td {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
 }
 
 .item{
@@ -50,6 +58,7 @@ table, th, td {
     width : 100%;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
 }
 
 #menu li{

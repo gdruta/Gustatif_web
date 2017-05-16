@@ -32,8 +32,7 @@
             <a class="menuLink" href="restaurants.html">Restaurants</a> 
         </p>
         </div>
-        <div>
-            <h1>Gustat'IF &ndash; INFO Restaurant</h1>
+        <div>            
             <div>
                 <p>Liste des produits</p>
                 <table id="produits">
@@ -42,7 +41,7 @@
             <div>
             <p>
                 <label for="spinner">Quantite:</label>
-                <input id="spinner" name="value" min="1">
+                <input id="spinner" name="value" value="1" min="1">
             </p>
             <p>
                 <button type="button" id="getvalue" disabled>AjoutProduits</button>            
@@ -165,7 +164,7 @@
                     .done(function(data) {
                         result=data.return.result;
                         if (result==="succes"){
-                            window.location.href = "./client/restaurants.html";
+                            window.location.href = "./restaurants.html";
                         }else{
                             var contenuHtml = '<p>Commande echoue</p>';
                             $('#resultat').html(contenuHtml);

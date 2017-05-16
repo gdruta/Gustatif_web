@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gustat'IF - INFO Restaurant</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        
+        <link rel="stylesheet" href="../css/style.css">
+        <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">   
+        
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        
+    </head>
+    <body>
+        <div class="top">
+            <div class="top_menu" id="user" >
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='../index.html'">                
+                    <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
+                    <p>Deconnection</p>
+                </div>
+            </div> 
+        </div>
+        <div>
+        <p id="menu">
+            <a class="menuLink" href="gestionnaire.html">home</a> | 
+            <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | 
+            <a class="menuLink" href="ClientAdminAll.html">Clients</a> | 
+            <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | 
+            <a class="menuLink" href="LivreurAdminAll.html">Livreurs</a>
+        </p>       
+        </div>
+        <div id="contenu" class="login_box">   
+        </div>
+        <script>            
+            var id = window.location.href.split('id=')[1];
+            $(function() {                
+                $.ajax({
+                    url: '../AdminActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'restaurant', 
+                        id: id
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var restaurant = data.restaurant;
+                    
+                    var contenuHtml='<h3>'+restaurant.denomination+'</h3>';
+                    contenuHtml +='<p>Liste de Produits</p>'
+                    contenuHtml +='<table id="produits">';
+                    var produits=data.restaurant.produits;                    
+                    var i;
+                    for (i=0; i<produits.length; i++){
+                        contenuHtml+='<tr class="clickable-row" data-value="'+produits[i].id+'">';
+                        contenuHtml+='<td>'+produits[i].denomination+'</td><td>'+produits[i].description+'</td> <td>'+produits[i].prix+'</td>'; 
+                        contenuHtml+='</tr>';
+                    }                             
+                    contenuHtml+='</table>';
+                    $('#contenu').html(contenuHtml);
+                })
+                .fail(function() {
+                    $('#contenu').html('ERREUR de chargement');
+                })
+                .always(function() {
+                    //
+                });
+            });                        
+                
+        </script>
+            
+    </body>
+</html>

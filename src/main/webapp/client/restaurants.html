@@ -13,7 +13,7 @@ and open the template in the editor.
         <link rel="stylesheet" href="../css/style.css">
         <style type="text/css">
             html, body { height: 100%; width: 80%; margin-left: auto; margin-right: auto; padding: 0; }
-            #map { height: 100%; }
+            #map { height: 600px; width: 70%;}
         </style>        
     </head>
     <body>
@@ -36,9 +36,12 @@ and open the template in the editor.
             <a class="menuLink" href="restaurants.html">Restaurants</a> 
         </p>
         </div>
-        <div id="infos">            
-        </div>
-        <div id="map">
+        <div class="menu1">
+            <div id="infos">            
+            </div>
+            <ul id="map">
+                
+            </ul>            
         </div>
         <script>
             $(function() {
@@ -72,13 +75,12 @@ and open the template in the editor.
                 })
                 .done(function(data) {
                     var restaurants = data.restaurants;
-                    var contenuHtml = '<ul>';
+                    var contenuHtml='';
                     var i;
                     for (i = 0; i < restaurants.length; i++) {
                         contenuHtml += '<li>' + restaurants[i].id + ' ' + restaurants[i].denomination 
                                 + '  <a href="./restaurant.html?id=' + restaurants[i].id + '">Voir</a>';
                     }
-                    contenuHtml += '</ul>';
                     $('#infos').html(contenuHtml);
 
 
