@@ -5,14 +5,10 @@
  */
 package Filter;
 
-
-
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.logging.Level;
-import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -23,13 +19,15 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import metier.modele.Client;
 
 /**
  *
  * @author Gheorghe
  */
-@WebFilter(filterName = "NewFilter", urlPatterns = {"/client.html","/commandes.html","/restaurants.html","/infos.html","/client.html"})
-public class NewFilter implements Filter {
+@WebFilter(filterName = "ClientFilter", urlPatterns = {"/client/client.html","/client/commandes.html",
+    "/client/commande.html","/client/infos.html","/client/restaurant.html","/client/restaurants.html"})
+public class ClientFilter implements Filter {
     
     private static final boolean debug = true;
 
@@ -38,13 +36,13 @@ public class NewFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public NewFilter() {
+    public ClientFilter() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("NewFilter:DoBeforeProcessing");
+            log("ClientFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -72,7 +70,7 @@ public class NewFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("NewFilter:DoAfterProcessing");
+            log("ClientFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -118,8 +116,8 @@ public class NewFilter implements Filter {
             LOGGER.log(Level.INFO, "Session has user? {0}, email: {1}", new Object[]{(session.getAttribute("user") != null), session.getAttribute("email")});
         }
         */
-        if ((session == null || session.getAttribute("user") == null)) {
-            response.sendRedirect("./index.html");
+        if ((session == null )|| (session.getAttribute("user") == null)|| ((session.getAttribute("user") != null) && !(session.getAttribute("user") instanceof Client))) {
+            response.sendRedirect("../index.html");
         } else {
             //        avoid caching of user-resources
             // Set standard HTTP/1.1 no-cache headers.
@@ -133,7 +131,6 @@ public class NewFilter implements Filter {
             
             fc.doFilter(sr, sr1);
         }
-        
     }
 
     /**
@@ -165,7 +162,7 @@ public class NewFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("NewFilter:Initializing filter");
+                log("ClientFilter:Initializing filter");
             }
         }
     }
@@ -176,9 +173,9 @@ public class NewFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("NewFilter()");
+            return ("ClientFilter()");
         }
-        StringBuffer sb = new StringBuffer("NewFilter(");
+        StringBuffer sb = new StringBuffer("ClientFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

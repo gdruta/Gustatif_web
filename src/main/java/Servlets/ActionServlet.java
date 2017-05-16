@@ -82,15 +82,21 @@ public class ActionServlet extends HttpServlet {
                         case "getUserInfo":
                             out.println(Formatage.getClientInfo(sessionUser));
                             break;
+                        case "deconnection":
+                        {
+                            Action a = new DeconnectionAction();
+                            a.execute(request);
+                            break;
+                        }
                         case "getListCommandes":
                             Action a = new PrintCommandesClientAction();
                             a.execute(request);
                             Formatage.sendListCommandesClient(out, (List<Commande>) request.getAttribute("commandes"));
                             break;
-                        case "commande":
-                            Action a4 = new PrintCommandesClientAction();
+                        case "getCommande":
+                            Action a4 = new PrintCommandeAction();
                             a4.execute(request);
-                            Formatage.sendListCommandesClient(out, (List<Commande>) request.getAttribute("commandes"));
+                            Formatage.sendInfoCommande(out, (Commande)request.getAttribute("commande"));
                             break;
                         case "getListRestaurants":
                             Action a1 = new PrintRestoAction();
@@ -104,7 +110,12 @@ public class ActionServlet extends HttpServlet {
                             break;
                         case "newCommande":
                             Action a3 = new FaireCommandeAction();
-                            a3.execute(request);
+                            try{
+                                a3.execute(request);
+                                out.println(Formatage.printSucces());
+                            }catch(Exception e){
+                                out.println(Formatage.printFail());
+                            }
                     }
                             
                 }

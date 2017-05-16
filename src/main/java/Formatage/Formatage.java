@@ -17,6 +17,7 @@ import metier.modele.Commande;
 import metier.modele.Livreur;
 import metier.modele.LivreurHumain;
 import metier.modele.Produit;
+import metier.modele.ProduitDeCommande;
 import metier.modele.Restaurant;
 import metier.service.ServiceMetier;
 
@@ -104,7 +105,7 @@ public class Formatage {
             jsonClient.addProperty("nom", ((LivreurHumain) livreur).getNom());
             jsonClient.addProperty("prenom", ((LivreurHumain) livreur).getPrenom());
             jsonClient.addProperty("adresse", ((LivreurHumain) livreur).getAdresse()); 
-            jsonClient.addProperty("poid", (livreur).getChargeMax()); 
+            jsonClient.addProperty("poid", livreur.getChargeMax()); 
         }
 
         JsonObject container = new JsonObject();
@@ -112,6 +113,7 @@ public class Formatage {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         
         String json= gson.toJson(container);
+        System.out.println(json);
         return json;
     }
 
@@ -186,6 +188,67 @@ public class Formatage {
         
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json= gson.toJson(container);
+        out.println(json);
+    }
+    
+    public static void sendInfoCommande(PrintWriter out, Commande c) {             
+        JsonObject jsonCmd = new JsonObject();
+            System.out.println(c);
+        jsonCmd.addProperty("id",c.getId());
+        SimpleDateFormat dateSimple1 = new SimpleDateFormat("dd MMM YYYY");
+        
+        jsonCmd.addProperty("date", dateSimple1.format(c.getDateCommande()));
+        SimpleDateFormat heure = new SimpleDateFormat("HH");
+        jsonCmd.addProperty("heure", heure.format(c.getDateCommande()));
+        SimpleDateFormat minute = new SimpleDateFormat("MM");
+        jsonCmd.addProperty("minute", minute.format(c.getDateCommande()));
+        jsonCmd.addProperty("duree", c.getDureeEstimee());
+        jsonCmd.addProperty("poidsTT", c.getPoidsTotal());
+        jsonCmd.addProperty("prixTT", c.getPrixTotal());
+        
+        
+        if(c.getEstLivree()){
+            jsonCmd.addProperty("statut","Livrée le " + dateSimple1.format(c.getDateLivraison()));
+        }else{
+            jsonCmd.addProperty("statut","En cours de livraison");
+        }
+        jsonCmd.addProperty("denomR", c.getRestaurant().getDenomination());
+        
+        jsonCmd.addProperty("adrR", c.getRestaurant().getAdresse());
+        Livreur l = c.getLivreur();
+
+        if(l.estHumain()){
+            jsonCmd.addProperty("type","Humain");
+            jsonCmd.addProperty("nom", "Jean paul");
+        }else{
+            jsonCmd.addProperty("type","Drone");
+            jsonCmd.addProperty("nom", l.getVersion());
+        }
+        
+        
+        jsonCmd.addProperty("idL", l.getId());
+        
+        List<ProduitDeCommande> contenu = c.getContenu();        
+        
+        JsonArray jsonListProd = new JsonArray();
+        for (ProduitDeCommande p : contenu){
+            JsonObject jsonProd = new JsonObject();
+            
+            jsonProd.addProperty("quantite",p.getQuantite());
+            jsonProd.addProperty("denomP",p.getProduit().getDenomination());
+            jsonProd.addProperty("prix",p.getProduit().getPrix());
+            
+            jsonListProd.add(jsonProd);
+        }
+
+        JsonObject container = new JsonObject();
+        container.add("commande",jsonCmd);
+        container.add("produits", jsonListProd);
+        
+        
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json= gson.toJson(container);
+        
         out.println(json);
     }
 }

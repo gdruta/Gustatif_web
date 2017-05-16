@@ -6,33 +6,47 @@
         <meta name="viewport" content="width=device-width">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
         <link rel="stylesheet" href="cmd.css" />
+        <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>
-        <h1>Gustat'IF &ndash; Historique des Commandes</h1>
+        <div class="top">
+            <div class="top_menu" id="user" >
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./infoLivreur.html'">
+                    <img src="../images/bike.png"  style="width:42px;height:42px;border:0;">
+                    <p id="userName"></p>                
+                </div>
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./livreurs.html'">                
+                    <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
+                    <p>Deconnection</p>
+                </div>
+            </div> 
+        </div>
+        <div>
+        <p id="menu">
+            <a class="menuLink" href="livreur.html">Home</a> | 
+            <a class="menuLink" href="CommandesLivreurCloturee.html">Commandes</a> |             
+            <a class="menuLink" href="CommandesLivreurEnCours.html">Commandes en Cours</a> 
+        </p>
+        </div>
         <div id='listeCommandes'>
             <span>chargement en cours...</span>
         </div>
 
 
-        <script>
-            var mail = window.location.href.split('mail=')[1];
+        <script>            
             $(function() {
 
                 $.ajax({
-                    url: '../AdminActionServlet',
+                    url: '../ActionServletLivreur',
                     type: 'POST',
                     data: {
-                        action: 'listeCommandeCloturee',
-                        mail: mail
+                        action: 'listeCommandeCloturee',                        
                     },
                     dataType: 'json'
                 })
                 .done(function(data) {
-                    var commandes = data.commandes;
-                    var contenuHtml = '<a href="../index.html">Deconnexion</a>'; 
-                    contenuHtml += '<p id="menu"><a class="menuLink" href="gestionnaire.html">home</a> | <a class="menuLink" href="CommandesAdminAll.html">Commandes</a> | <a class="menuLink" href="clients.html">Clients</a> | \n\
-                    <a class="menuLink" href="listeRestaurants.html">Restaurants</a> | <a class="menuLink" href="LivreurAdminAll.html">Livreurs</a></p>'
-                    contenuHtml += '<table>';
+                    var commandes = data.commandes;                    
+                    var contenuHtml = '<table>';
                     var i;
                     
                     contenuHtml += '<tr><td>Numero</td><td>Date</td><td>Statut</td><td>Restaurant</td><td>Infos</td></tr>';
@@ -53,6 +67,28 @@
 
             });
 
-        </script>   
+        </script>  
+        <script>
+            $(function() {
+                $.ajax({
+                    url: '../ActionServletLivreur',
+                    type: 'POST',
+                    data: {
+                        action: 'getUser'                      
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var user = data.user;
+                    
+                    var contenuHtml = '<ul>';
+                    contenuHtml += data.user.prenom;
+                    contenuHtml += ' ';
+                    contenuHtml += data.user.nom;
+                    contenuHtml += '</ul>';
+                    $('#userName').html(contenuHtml);
+                })
+            });
+        </script>
     </body>
 </html>

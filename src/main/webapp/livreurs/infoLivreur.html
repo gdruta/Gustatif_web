@@ -6,40 +6,38 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Accueil Gustat'if-Client</title>
+        <title>Client -Infos Livreur</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../css/style.css">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
-        
     </head>
     <body>
         <div class="top">
             <div class="top_menu" id="user" >
-                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./infoLivreur.html'">
                     <img src="../images/user.png"  style="width:42px;height:42px;border:0;">
                     <p id="userName"></p>                
                 </div>
-                <div class="top_item" style="cursor: pointer;" id="deconnection">                
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='../index.html'">                
                     <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
                     <p>Deconnection</p>
                 </div>
             </div> 
         </div>
-        <div class="menu1">
-            <div class="item" id="commandes" style="cursor: pointer;" onclick="window.location.href='./commandes.html'">
-                <img src="../images/basket.png"  style="width:42px;height:42px;border:0;">
-                <p>Mes Commnades</p>
-            </div>
-            <div class="item" id="restaurants" style="cursor: pointer;" onclick="window.location.href='./restaurants.html'">
-                <img src="../images/restaurant.png"  style="width:42px;height:42px;border:0;">
-                <p>Restaurants</p>            
-            </div>
+        <div>
+        <p id="menu">
+            <a class="menuLink" href="livreur.html">Home</a> | 
+            <a class="menuLink" href="CommandesLivreurCloturee.html">Commandes</a> |             
+            <a class="menuLink" href="CommandesLivreurEnCours.html">Commandes en Cours</a> 
+        </p>
+        </div>
+        <div id="infos">            
         </div>
         <script>
             $(function() {
                 $.ajax({
-                    url: '../ActionServlet',
+                    url: '../ActionServletLivreur',
                     type: 'POST',
                     data: {
                         action: 'getUser'                      
@@ -48,7 +46,6 @@ and open the template in the editor.
                 })
                 .done(function(data) {
                     var user = data.user;
-                    
                     var contenuHtml = '<ul>';
                     contenuHtml += data.user.prenom;
                     contenuHtml += ' ';
@@ -57,18 +54,34 @@ and open the template in the editor.
                     $('#userName').html(contenuHtml);
                 })
             });
-            $('#deconnection').on('click',function(){
+            $(function() {
                 $.ajax({
-                    url: '../ActionServlet',
+                    url: '../ActionServletLivreur',
                     type: 'POST',
                     data: {
-                        action: 'deconnection'                      
+                        action: 'getUserInfo'                      
                     },
                     dataType: 'json'
-                });
-                window.location.href = "../index.html";
+                })
+                .done(function(data) {
+                    var user = data.user;
+                    var contenuHtml = '<ul>';
+                    contenuHtml += 'Numero Client: '+user.id;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Adresse Mail: '+user.mail;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Nom: '+user.nom;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Prenom: '+user.prenom;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Adresse: '+user.adresse;
+                    contenuHtml += '</br>';
+                    contenuHtml += 'Poid max: '+user.poid;
+                    contenuHtml += '</br>';
+                    contenuHtml += '</ul>';
+                    $('#infos').html(contenuHtml);
+                })
             });
         </script>
-    </body>            
-            
+    </body>
 </html>

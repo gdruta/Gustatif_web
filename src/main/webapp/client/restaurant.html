@@ -13,8 +13,17 @@
         
     </head>
     <body>
-        <div id="user" class="user" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
-            <p id="userName"></p>
+        <div class="top">
+            <div class="top_menu" id="user" >
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
+                    <img src="../images/user.png"  style="width:42px;height:42px;border:0;">
+                    <p id="userName"></p>                
+                </div>
+                <div class="top_item" style="cursor: pointer;" id="deconnection">                
+                    <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
+                    <p>Deconnection</p>
+                </div>
+            </div> 
         </div>
         <div>
         <p id="menu">
@@ -36,7 +45,7 @@
                 <input id="spinner" name="value" min="1">
             </p>
             <p>
-                <button id="getvalue">AjoutProduits</button>            
+                <button type="button" id="getvalue" disabled>AjoutProduits</button>            
             </p>
             </div>
             <div>
@@ -46,7 +55,7 @@
             <div>
                 <p>Prix totale:</p>
                 <p id="prixTotale"></p>
-                <button id="passerCommande">Passer Commande</button>
+                <button type="button" id="passerCommande" disabled>Passer Commande</button>
             </div>
             <div id="resultat"></div>
         </div>
@@ -62,8 +71,7 @@
                 })
                 .done(function(data) {
                     var user = data.user;
-                    var contenuHtml = '<a href="../index.html">Deconnexion</a>'; 
-                    contenuHtml += '<ul>';
+                    var contenuHtml = '<ul>';
                     contenuHtml += data.user.prenom;
                     contenuHtml += ' ';
                     contenuHtml += data.user.nom;
@@ -125,7 +133,8 @@
                             total=total+sum;                            
                         });  
                         $('#prixTotale').html(total);
-                    });              
+                    });    
+                    $('#passerCommande').button('enable');
                 });               
 
                 $( "button" ).button();
@@ -164,10 +173,22 @@
                     });
                 });                        
             });
+            $('#deconnection').on('click',function(){
+                $.ajax({
+                    url: '../ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'deconnection'                      
+                    },
+                    dataType: 'json'
+                });
+                window.location.href = "../index.html";
+            });
         </script>
         <script>
             $("#produits").on("click", ".clickable-row",function(){
-                $(this).addClass('selected').siblings().removeClass('selected');               
+                $(this).addClass('selected').siblings().removeClass('selected');        
+                $('#getvalue').button('enable');
             });
 
         </script>

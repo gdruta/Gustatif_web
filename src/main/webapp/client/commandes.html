@@ -9,12 +9,22 @@ and open the template in the editor.
         <title>Client - Commandes</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="cmd.css" />
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <div id="user" class="user" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
-            <p id="userName"></p>
+        <div class="top">
+            <div class="top_menu" id="user" >
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./infos.html'">
+                    <img src="../images/user.png"  style="width:42px;height:42px;border:0;">
+                    <p id="userName"></p>                
+                </div>
+                <div class="top_item" style="cursor: pointer;" id="deconnection">                
+                    <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
+                    <p>Deconnection</p>
+                </div>
+            </div> 
         </div>
         <div>
         <p id="menu">
@@ -37,8 +47,7 @@ and open the template in the editor.
                 })
                 .done(function(data) {
                     var user = data.user;
-                    var contenuHtml = '<a href="../index.html">Deconnexion</a>'; 
-                    contenuHtml += '<ul>';
+                    var contenuHtml = '<ul>';
                     contenuHtml += data.user.prenom;
                     contenuHtml += ' ';
                     contenuHtml += data.user.nom;
@@ -67,7 +76,18 @@ and open the template in the editor.
                     contenuHtml+='</table>';
                     $('#listeCommandes').html(contenuHtml);
                 });               
-            });            
+            });   
+            $('#deconnection').on('click',function(){
+                $.ajax({
+                    url: '../ActionServlet',
+                    type: 'POST',
+                    data: {
+                        action: 'deconnection'                      
+                    },
+                    dataType: 'json'
+                });
+                window.location.href = "../index.html";
+            });
         </script>
     </body>
 </html>

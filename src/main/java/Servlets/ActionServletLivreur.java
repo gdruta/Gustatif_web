@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import metier.modele.Client;
 import metier.modele.Commande;
 import metier.modele.Livreur;
+import metier.modele.LivreurHumain;
 import metier.modele.Restaurant;
 
 /**
@@ -50,7 +51,7 @@ public class ActionServletLivreur extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String action=request.getParameter("action");             
             if ("login".equals(action)){
-                Action a = new LoginAction();
+                Action a = new LoginLivreurAction();
                 a.execute(request);
                 if (request.getAttribute("client")!=null){
                     session.setAttribute("user",request.getAttribute("client"));
@@ -59,7 +60,7 @@ public class ActionServletLivreur extends HttpServlet {
                     out.println(Formatage.printFail());
                 }
             }else if ("inscriptionLivreur".equals(action)){
-                Action a = new InscriptionAction();
+                Action a = new InscriptionLivreurAction();
                 a.execute(request);
                 boolean result=(boolean) request.getAttribute("result");
                 if (result){
@@ -82,32 +83,13 @@ public class ActionServletLivreur extends HttpServlet {
                             break;
                         case "getUserInfo":
                             out.println(Formatage.getLivreurInfo(sessionUser));
-                            break;
-                        case "getListCommandes":
-                            Action a = new PrintCommandesClientAction();
-                            a.execute(request);
-                            Formatage.sendListCommandesClient(out, (List<Commande>) request.getAttribute("commandes"));
-                            break;
-                        case "getListRestaurants":
-                            Action a1 = new PrintRestoAction();
-                            a1.execute(request);                            
-                            Formatage.sendListRestaurants(out, (List<Restaurant>) request.getAttribute("restaurants"));
-                            break;
-                        case "restaurant":
-                            Action a2 = new InfoRestaurantAction();                            
-                            a2.execute(request);  
-                            Formatage.sendInfoRestaurant(out, (Restaurant) request.getAttribute("restaurant"));
-                            break;
-                        case "newCommande":
-                            Action a3 = new FaireCommandeAction();
-                            a3.execute(request);
-                            break;
+                            break;                        
                         case "listeCommandeEnCours":
-                            String mail = request.getParameter("mail");
+                            String mail = ((LivreurHumain) sessionUser).getMail();
                             out.println(InfoCommande.printListeCommandesByLivreurEnCours(mail));
                             break;
                         case "listeCommandeCloturee":
-                            String mail2 = request.getParameter("mail");
+                            String mail2 = ((LivreurHumain) sessionUser).getMail();
                             out.println(InfoCommande.printListeCommandesByLivreurCloturee(mail2));
                             break;
                     }

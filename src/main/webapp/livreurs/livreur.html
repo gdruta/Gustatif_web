@@ -4,22 +4,54 @@
         <title>Gustat'IF - Livreur</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="../css/style.css">
         <script src="//code.jquery.com/jquery-1.12.1.min.js"></script>
     </head>
     <body>
-        <h1>Gustat'IF &ndash; Livreur</h1>
-        <div id='livreur'>
-            <span>chargement en cours...</span>
+        <div class="top">
+            <div class="top_menu" id="user" >
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./infoLivreur.html'">
+                    <img src="../images/bike.png"  style="width:42px;height:42px;border:0;">
+                    <p id="userName"></p>                
+                </div>
+                <div class="top_item" style="cursor: pointer;" onclick="window.location.href='./livreurs.html'">                
+                    <img src="../images/deconnection.png"  style="width:42px;height:42px;border:0;">
+                    <p>Deconnection</p>
+                </div>
+            </div> 
+        </div>
+        <div class="menu1">
+            <div class="item" id="commandes" style="cursor: pointer;" onclick="window.location.href='./CommandesLivreurCloturee.html'">
+                <img src="../images/basket.png"  style="width:42px;height:42px;border:0;">
+                <p>Historique de Commandes</p>
+            </div>
+            <div class="item" id="restaurants" style="cursor: pointer;" onclick="window.location.href='./CommandesLivreurEnCours.html'">
+                <img src="../images/restaurant.png"  style="width:42px;height:42px;border:0;">
+                <p>Commandes en cours</p>            
+            </div>
         </div>
 
-
         <script>
-            var mail = window.location.href.split('mail=')[1];
-                var contenuHtml = '<a href="../index.html">Deconnexion</a>';
-                contenuHtml += '<a href=CommandesLivreurCloturee.html?mail='+mail+'>Historique de Commandes</a> ';
-                contenuHtml += '<a href=CommandesLivreurEnCours.html?mail='+mail+'>Commandes en cours</a>';
-                $('#livreur').html(contenuHtml);
-            
+            $(function() {
+                $.ajax({
+                    url: '../ActionServletLivreur',
+                    type: 'POST',
+                    data: {
+                        action: 'getUser'                      
+                    },
+                    dataType: 'json'
+                })
+                .done(function(data) {
+                    var user = data.user;
+                    
+                    var contenuHtml = '<ul>';
+                    contenuHtml += data.user.prenom;
+                    contenuHtml += ' ';
+                    contenuHtml += data.user.nom;
+                    contenuHtml += '</ul>';
+                    $('#userName').html(contenuHtml);
+                })
+            });
         </script>
     </body>
 </html>
